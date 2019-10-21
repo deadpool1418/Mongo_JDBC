@@ -1,0 +1,252 @@
+#########################################################Practical 2########################################################
+create table sample(roll int auto_increment,primary key(roll),name varchar(20));
+ insert into sample values(NULL,"Vijay");
+ insert into sample values(NULL,"Vinay");
+
+create view myview as select name from sample;
+
+create index myindex on sample(roll);
+
+create synonym sample1 for sample;
+
+#########################################################Practical 3###########################################################
+create table student(roll int,name varchar(20),marks int);
+insert into student values(1,'vijay',88);
+insert into student values(2,'tejas',50);
+insert into student values(3,'rohan',78);
+insert into student values(4,'vinay',62);
+
+create table student1(roll int,name varchar(20),marks int);
+insert into student1 values(1,'vijay',88);
+insert into student1 values(2,'tejas',50);
+insert into student1 values(3,'rohan',78);
+insert into student1 values(4,'vinay',62);
+
+delete from student where name='tejas';
+select * from student where roll=2;
+select * from student intersect select * from student1;
+select * from student union select * from student1;
+select * from student1 minus select * from student;
+update student set marks=76 where roll=3;
+
+########################################################Practical 4###############################################################
+mysql> select * from sample1;
++--------+-------+
+| rollno | marks |
++--------+-------+
+|      1 |    80 |
+|      2 |    90 |
+|      3 |    75 |
+|      4 |    80 |
++--------+-------+
+
+mysql> select * from sample;
++------+--------+
+| roll | name   |
++------+--------+
+|    1 | Vijay  |
+|    2 | Vinay  |
+|    3 | Tejas  |
+|    4 | Rohan  |
+|    5 | Pratik |
++------+--------+
+
+mysql> select roll,name,sample1.marks from sample inner join sample1 on sample.roll=sample1.rollno;
++------+-------+-------+
+| roll | name  | marks |
++------+-------+-------+
+|    1 | Vijay |    80 |
+|    2 | Vinay |    90 |
+|    3 | Tejas |    75 |
+|    4 | Rohan |    80 |
++------+-------+-------+
+
+mysql> select roll,name,sample1.marks from sample right join sample1 on sample.roll=sample1.rollno
++------+-------+-------+
+| roll | name  | marks |
++------+-------+-------+
+|    1 | Vijay |    80 |
+|    2 | Vinay |    90 |
+|    3 | Tejas |    75 |
+|    4 | Rohan |    80 |
++------+-------+-------+
+
+mysql> select roll,name,sample1.marks from sample left join sample1 on sample.roll=sample1.rollno
++------+--------+-------+
+| roll | name   | marks |
++------+--------+-------+
+|    1 | Vijay  |    80 |
+|    2 | Vinay  |    90 |
+|    3 | Tejas  |    75 |
+|    4 | Rohan  |    80 |
+|    5 | Pratik |  NULL |
++------+--------+-------+
+
+mysql> select a.name,b.marks from sample a,sample1 b where a.roll=b.rollno;
++-------+-------+
+| name  | marks |
++-------+-------+
+| Vijay |    80 |
+| Vinay |    90 |
+| Tejas |    75 |
+| Rohan |    80 |
++-------+-------+
+
+##############################################################Practical 5################################################################
+SQL> create table borrower(roll int,name varchar(10),doi date,nob varchar(20),status varchar(2));
+SQL> insert into borrower values(1,'Vijay','06-06-2019','WOF','I');
+ insert into borrower values(2,'Pratik','01-06-2019','GOT','I');
+ insert into borrower values(3,'Kalpesh','30-06-2019','WOF','I');
+ insert into borrower values(4,'Vinay','02-07-2019','GOT','I');
+ 
+ create table f(Rollno int,DOR date,fine int);
+ 
+ create or replace procedure cal(r integer) as
+ d date;
+ no integer;
+ f integer:=0;
+ begin
+ select to_number(trunc(sysdate-doi)) into no from borrower where roll=r ;
+ if(no>15 and no<30) then
+ no:=no-15;
+ f:=no*5;
+ elsif(no>30) then
+ no:=no-30;
+ f:=(no*50)+75;
+ else
+ f:=0;
+ end if;
+ insert into f values(r,sysdate,f);
+ update borrower set status='R' where roll=r;
+ end;
+
+##################################################################Practical 6#################################################################
+
+
+mysql> select * from sample2;
++--------+-------+
+| rollno | marks |
++--------+-------+
+|      5 |    55 |
+|      6 |    77 |
+|      8 |    64 |
++--------+-------+
+
+
+mysql> select * from sample1;
++--------+-------+
+| rollno | marks |
++--------+-------+
+|      1 |    80 |
+|      2 |    90 |
+|      3 |    75 |
+|      4 |    80 |
++--------+-------+
+
+declare
+roll integer;
+name varchar2(10);
+cursor mycursor is select * from sample1 union select * from sample2;
+cursor mycursor is select * from info2 minus select * from info1;
+cursor mycursor is select * from info2 where roll not in (select roll from info1);
+begin
+open mycursor;
+loop
+fetch mycursor into roll,name;
+exit when mycursor%notfound;
+dbms_output.put_line(roll ||' '||name);
+end loop;
+close mycursor;
+end;
+
+
+declare 
+data info1%rowtype;
+data1 info1%rowtype;
+cursor sample is select roll from info2;
+cursor mycursor(rn integer) is select * from info1 where roll=rn;
+begin
+for data in sample
+loop
+open mycursor(data.roll);
+fetch mycursor into data1;
+dbms_output.put_line(data1.roll||' '||data1.marks);
+close mycursor;
+end loop;
+end;
+##################################################################Practical 7#################################################################
+create table marks(roll int,name varchar(10),marks int);
+create table result(roll int,name varchar(10),class varchar(20));
+insert into marks values(1,'Vijay',1200);
+insert into marks values(2,'Vinay',1000);
+insert into marks values(3,'Rohan',925);
+insert into marks values(4,'Tejas',855);
+
+create or replace procedure res(r integer) as
+name varchar2(20);
+marks integer;
+class varchar2(20);
+begin
+select name,marks into name,marks from marks where roll=r;
+if(marks>=990 and marks<1500) then
+class:='Distinction';
+elsif(marks>=900 and marks<989) then
+class:='First Class';
+elsif(marks>=825 and marks<899) then
+class:='Higher Second Class';
+end if;
+dbms_output.put_line(class);
+insert into result values(r,name,class);
+end;
+###################################################################Practical 8###############################################################
+
+create or replace trigger test before delete or update on info1 for each row
+begin 
+insert into info2 values(:OLD.roll,:OLD.name,:OLD.branch);
+end;
+
+##################################################################PRactcial 9#################################################################
+
+>use mydb;
+>db.createCollection("student");
+>> db.student.insertMany({"Roll":1,"Name":"Vijay","Branch":"Computer","Marks":88});
+> db.student.insert({"Roll":3,"Name":"Vinay","Branch":"Computer","Marks":75});
+
+> db.student.find().pretty();
+> db.student.find({"Marks":{$lte:75}}).pretty();
+> db.student.find({"Roll":1}).pretty();
+> db.student.find({"Marks":{$lt:75}}).pretty();
+> db.student.find({"Marks":{$gte:75}}).pretty();
+> db.student.find({"Marks":{$gt:75}}).pretty();
+
+> db.student.update({Roll:3},{$set:{"Name":"Rohan"}});
+
+> db.student.remove({"Roll":5});
+> db.student.remove({"Marks":{$lte:62}});
+
+###################################################################Practical 10################################################################
+
+> db.student.save({_id:ObjectId("5dad2ebf4bd879ab2b21887b"),"Branch":"Electrical"});
+> db.student.find({$and:[{"Name":"Aniket"},{"Branch":"Electrical"}]}).pretty();
+> db.student.find({$or:[{"Name":"Aniket"},{"Branch":"Mechanical"}]});
+> db.student.find({"Marks":{$gt:60}},{$or:[{"Branch":"Mechanical"},{"Roll":2}]}).pretty();
+
+##################################################################Practical 11################################################################
+
+> db.student.aggregate([{$group:{_id:"$Branch",num_student:{$sum:1}}}]);
+> db.student.aggregate([{$group:{_id:"$Branch",sum:{$sum:"$Marks"}}}]);
+> db.student.aggregate([{$group:{_id:"$Branch",average:{$avg:"$Marks"}}}]);
+> db.student.aggregate([{$group:{_id:"$Name",No:{$sum:1}}}]);
+> db.student.aggregate([{$group:{_id:"$Branch",sum:{$sum:"$Marks"},Min:{$min:"$Marks"},max:{$max:"$Marks"},average:$avg:"$Marks"}}}]).pretty();
+
+###################################################################Practical 12################################################################
+
+> db.student.mapReduce(
+... function(){emit(this.Branch,this.Marks);},
+... function(key,values){return Array.sum(values)},
+... {
+... query:{$or:[{"Branch":"Computer"},{"Branch":"Mechanical"}]},
+... out:"output"
+... }
+... )
+
