@@ -1,0 +1,940 @@
+################################################################## 1 ##########################################################################
+
+#include<math.h>
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+//void dda(int,int,int,int);
+void bre(int x1,int y1,int x2,int y2)
+{
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    int dx=abs(x2-x1);
+    int dy=abs(y2-y1);
+    float g=(2*dy)-dx;//decesion parameter means g
+    int x=x1;
+    int y=y1;
+    putpixel(x,y,RED);
+    int i=1;
+    while(i<=dx)
+    {
+        if(g>=0)
+        {
+            y++;
+            g=g+((2*dy)-(2*dx));
+            delay(10);
+            putpixel(x,y,WHITE);
+        }
+        else
+        {
+            y=y;
+            g=g+(2*dy);
+            delay(10);
+            putpixel(x,y,WHITE);
+        }
+        x++;
+        i++;
+    }
+}
+void dda(int x1,int y1,int x2,int y2)
+{
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    float xinc,yinc;
+    int steps,dx,dy;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+        steps=abs(dx);
+    else
+        steps=abs(dy);
+    xinc=float(dx)/steps;
+    yinc=float(dy)/steps;
+
+    float x=x1;
+    float y=y1;
+    int i=1;
+    putpixel(x,y,WHITE);
+    while(i<=steps)// for(int i=1;i<=steps;i++)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(20);
+        putpixel(floor(x),floor(y),WHITE);
+        i++;
+    }
+}
+int main()
+{
+    int x1,y1,x2,y2;
+    cout<<"Enter";
+    cin>>x1>>y1>>x2>>y2;
+    bre(x1,y1,x2,y2);
+    dda(x1,y1,x2,y2);
+}
+
+####################################################################### 2 #####################################################################
+
+#include<graphics.h>
+#include<iostream>
+using namespace std;
+void disp(int,int,int,int);
+void cir(int x,int y,int r)
+{
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    float s;
+    int x1=0;
+    int y1=r;
+    s=3-(2*r);//decision parameter
+    while(x1<=y1)
+    {
+        if(s<=0)
+        {
+            s=s+(4*x1)+6;
+        }
+        else
+        {
+            s=s+4*(x1-y1)+10;
+            y1--;
+        }
+        x1++;
+        disp(x1,y1,x,y);
+    }
+}
+void disp(int x1,int y1,int x,int y)
+{
+    delay(20);
+    putpixel(x+x1,y+y1,WHITE);
+    delay(20);
+    putpixel(x+y1,y+x1,WHITE);
+    delay(20);
+    putpixel(x1+y,x+y1,WHITE);
+    delay(20);
+    putpixel(x+y1,y-x1,WHITE);
+    delay(20);
+    putpixel(x+x1,y-y1,WHITE);
+    delay(20);
+    putpixel(x-x1,y-y1,WHITE);
+    delay(20);
+    putpixel(x-y1,y-x1,WHITE);
+    delay(20);
+    putpixel(x-y1,y+x1,WHITE);
+    delay(20);
+    putpixel(x-x1,y+y1,WHITE);
+}
+int main()
+{
+    int r,x,y;
+    cout<<"Enter radius\n";
+    cin>>r;
+    cout<<"Enter center of circle\n";
+    cin>>x>>y;
+    cir(x,y,r);
+}
+
+################################################################### 3 #######################################################################
+
+#include<math.h>
+#include<graphics.h>
+#include<iostream>
+using namespace std;
+void dda(int,int,int,int);
+void disp(int,int,int,int);
+int main()
+{
+    int x,y,r;
+    cout<<"Enter center co-ordinate of circle\n";
+    cin>>x>>y;
+    cout<<"Enter radius\n";
+    cin>>r;
+    float s;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    int x1=0;
+    int y1=r;
+    s=3-(2*r);
+    while(x1<=y1)
+    {
+        if(s<=0)
+        {
+            s=s+(4*x1)+6;
+        }
+        else
+        {
+            s=s+4*(x1-y1)+10;
+            y1--;
+        }
+        x1++;
+        disp(x1,y1,x,y);
+    }
+    int r1=r/2;
+    int x2=0;
+    int y2=r1;
+    float s1=3-(2*r1);
+    while(x2<=y2)
+    {
+        if(s1<=0)
+        {
+            s1=s1+(4*x2)+6;
+        }
+        else
+        {
+            s1= s1+4*(x2-y2)+10;
+            y2--;
+        }
+        x2++;
+        disp(x2,y2,x,y);
+    }
+
+
+    int q;
+    q=(sqrt((r*r)-(r1*r1)));
+    int l=2*q;
+    int x5=x-q;
+    int y5=y+r1;
+    int x7=x+q;
+    int y7=y+r1;
+    dda(x5,y5,x7,y7);
+    int y6=y-r;
+    dda(x5,y5,x,y6);
+    dda(x,y6,x7,y7);
+}
+void dda(int x1,int y1,int x2,int y2)
+{
+    int steps,dx,dy;
+    float xinc,yinc;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+        steps=abs(dx);
+    else
+        steps=abs(dy);
+    xinc=float(dx)/steps;
+    yinc=float(dy)/steps;
+    int i;
+    float x=x1;
+    float y=y1;
+    putpixel(x,y,WHITE);
+    for(i=1;i<=steps;i++)
+    {
+        x+=xinc;
+        y+=yinc;
+        putpixel(floor(x),floor(y),WHITE);
+        delay(20);
+    }
+
+}
+void disp(int x1,int y1,int x,int y)
+{
+    delay(10);
+    putpixel(x+x1,y+y1,WHITE);
+    delay(10);
+    putpixel(x+y1,y+x1,WHITE);
+    delay(10);
+    putpixel(x+y1,y-x1,WHITE);
+    delay(10);
+    putpixel(x+x1,y-y1,WHITE);
+    delay(10);
+    putpixel(x-x1,y-y1,WHITE);
+    delay(10);
+    putpixel(x-y1,y-x1,WHITE);
+    delay(10);
+    putpixel(x-y1,y+x1,WHITE);
+    delay(10);
+    putpixel(x-x1,y+y1,WHITE);
+    delay(10);
+}
+
+############################################################ 4 ############################################################################
+
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+void dda(int,int,int,int);
+void pattern(int x1,int y1,int x2,int y2)
+{
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    //rectangle
+    dda(x1,y1,x2,y1);
+    dda(x2,y1,x2,y2);
+    dda(x2,y2,x1,y2);
+    dda(x1,y2,x1,y1);
+
+    //diamond
+    int m1=(x1+x2)/2;
+    int m2=(y2+y1)/2;
+
+    dda(m1,y2,x2,m2);
+    dda(m1,y2,x1,m2);
+    dda(x1,m2,m1,y1);
+    dda(m1,y1,x2,m2);
+
+    //inner rectangle
+    dda(((m1+x2)/2),((y2+m2)/2),((x2+m1)/2),((m2+y1)/2));
+    dda(((x2+m1)/2),((m2+y1)/2),((x1+m1)/2),((y1+m2)/2));
+    dda(((x1+m1)/2),((m2+y1)/2),((x1+m1)/2),((m2+y2)/2));
+    dda(((x1+m1)/2),((m2+y2)/2),((m1+x2)/2),((y2+m2)/2));
+
+}
+void dda(int x1,int y1,int x2,int y2)
+{
+    int steps;
+    float dx,dy,x,y,xinc,yinc;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+        steps=abs(dx);
+    else
+        steps=abs(dy);
+    xinc=dx/steps;
+    yinc=dy/steps;
+    x=x1;
+    y=y1;
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x=x+xinc;
+        y=y+yinc;
+        putpixel(x,y,WHITE);
+        delay(10);
+        i++;
+    }
+}
+int main()
+{
+    int x1,y1,l,x2,y2;
+    cout<<"Enter bottom left coordinates\n";
+    cin>>x1>>y1;
+    cout<<"Enter top right coordinates\n";
+    cin>>x2>>y2;
+    pattern(x1,y1,x2,y2);
+}
+
+################################################################## 5 ########################################################################
+
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+void bfill(int,int,int);
+void dda(int,int,int,int);
+void draw(int x,int y)
+{
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    int l=50;
+    dda(x+l,y,x,y+l);
+    dda(x,y+l,x-l,y);
+    dda(x-l,y,x,y-l);
+    dda(x,y-l,x+l,y);
+
+    int m1x=(x+(x+l))/2;
+    int m1y=(y+(y+l))/2;
+    int m2x=(x+(x-l))/2;
+    int m2y=(y+(y-l))/2;
+    dda(m1x,m1y,m2x,m2y);
+    dda(m2x,m1y,m1x,m2y);
+
+    int p1x=(m2x+x)/2;
+    int p1y=(m2y+(y-l))/2;
+    int p2x=(m1x+(x+l))/2;
+    int p2y=(m1y+y)/2;
+
+    dda(p1x,p1y,p2x,p2y);
+   int q1x=(m1x+x)/2;
+   int q2x=(m2x+(x-l))/2;
+
+   dda(q2x,p2y,q1x,p1y);
+
+    int r1y=(y+m2y)/2;
+    int r2y=(m1y+(y+l))/2;
+    dda(p1x,r2y,p2x,r1y);
+    dda(q2x,r1y,q1x,r2y);
+
+    bfill(p1x,m2y,15);
+    bfill(q1x,m2y,15);
+    bfill(q2x,y,15);
+    bfill(p1x,y,15);
+    bfill(q1x,y,15);
+    bfill(p2x,y,15);
+    bfill(p1x,m1y,15);
+    bfill(q1x,m1y,15);
+
+}
+void bfill(int x,int y,int newcolor)
+{
+    int current=getpixel(x,y);
+    if((current!=newcolor)&&(current!=15))
+    {
+        delay(5);
+        putpixel(x,y,newcolor);
+        bfill(x+1,y,newcolor);
+        bfill(x-1,y,newcolor);
+        bfill(x,y+1,newcolor);
+        bfill(x,y-1,newcolor);
+    }
+}
+void dda(int x1,int y1,int x2,int y2)
+{
+    int steps;
+    float dx,dy,x,y,xinc,yinc;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+        steps=abs(dx);
+    else
+        steps=abs(dy);
+    xinc=dx/steps;
+    yinc=dy/steps;
+    x=x1;
+    y=y1;
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x=x+xinc;
+        y=y+yinc;
+        putpixel(x,y,WHITE);
+        delay(10);
+        i++;
+    }
+}
+int main()
+{
+    int x1,y1;
+    int l=50;
+    cout<<"Enter coordinate of chess board\n";
+    cin>>x1>>y1;
+    draw(x1,y1);
+}
+
+############################################################## 6 ############################################################################
+
+#include<iostream>
+#include<graphics.h>
+#include<math.h>
+using namespace std;
+class trans
+ {
+  public:
+  int x[10],y[10],n,tx,ty,sx,sy;
+   float  x1[10],y1[10];
+  float ang,s;
+  void generate()
+  {
+    cout<<"Enter no of virtices"<<endl;
+   cin>>n;
+    cout<<"Enter coordinates x,y"<<endl;
+   for(int i=0;i<n;i++)
+    {
+     cin>>x[i]>>y[i];
+    }
+ }
+ void translation()
+ {
+  cout<<"Enter the translation distance (tx,ty)"<<endl;
+  cin>>tx>>ty;
+   for(int i=0;i<n;i++)
+    {
+      x[i]=x[i]+tx;
+      y[i]=y[i]+ty;
+    }
+ }
+ void scaled()
+  {
+   cout<<"Enter the scaled distance(sx,sy)"<<endl;
+   cin>>sx>>sy; 
+   for(int i=0;i<n;i++)
+   {
+     x[i]=x[i]*sx;
+     y[i]=y[i]*sy;
+   }
+ }
+ void rotate()
+ {
+  cout<<"Enter the angle of rotation(ang)"<<endl;
+  cin>>s;
+  ang=s*(3.14/180);
+  for(int i=0;i<n;i++)
+  {
+   x1[i]=(x[i]*cos(ang)-y[i]*sin(ang))+320;
+   y1[i]=240-(x[i]*sin(ang)+y[i]*cos(ang));
+  }
+ }  
+ void draw()
+ {
+   int i;
+   for( i=0;i<n-1;i++)
+   {
+    line(x[i],y[i],x[i+1],y[i+1]);delay(500);
+    }
+    line(x[i],y[i],x[0],y[0]);
+  }
+ void draw1()
+ {
+   int i;
+   for( i=0;i<n-1;i++)
+   {
+    line(x1[i],y1[i],x1[i+1],y1[i+1]);delay(500);
+    }
+    line(x1[i],y1[i],x1[0],y1[0]);
+  }
+};
+ int main()
+ {
+   trans z;
+   z.generate();
+  int gd=DETECT,gm;
+   initgraph(&gd,&gm,NULL);
+   z.draw();delay(500);
+   z.translation();
+   z.draw(); delay(500);
+   z.scaled();
+    z.draw();delay(500);
+   z.rotate();
+   z.draw1();delay(100);
+ }
+ 
+############################################################## 7 ############################################################################
+
+#include<graphics.h>
+#include<iostream>
+using namespace std;
+void dotted(int,int,int,int);
+void dda(int x1,int y1,int x2,int y2)
+{
+    float dx,dy,x,y,xinc,yinc;
+    int steps;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+            steps=abs(dx);
+    else
+            steps=abs(dy);
+    x=x1;
+    y=y1;
+    xinc=dx/steps;
+    yinc=dy/steps;
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(10);
+        putpixel(x,y,WHITE);
+        i++;
+    }
+    closegraph();
+}
+void dotted(int x1,int y1,int x2,int y2)
+{
+    float dx,dy,x,y,xinc,yinc;
+    int steps;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+            steps=abs(dx);
+    else
+            steps=abs(dy);
+    x=x1;
+    y=y1;
+    xinc=dx/steps;
+    yinc=dy/steps;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(10);
+        if((i%2)!=0)
+            putpixel(x,y,WHITE);
+        i++;
+    }
+    closegraph();
+}
+void dashed(int x1,int y1,int x2,int y2)
+{
+    float dx,dy,x,y,xinc,yinc;
+    int steps;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+            steps=abs(dx);
+    else
+            steps=abs(dy);
+    x=x1;
+    y=y1;
+    xinc=dx/steps;
+    yinc=dy/steps;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(10);
+        if((i%10)!=0)
+            putpixel(x,y,WHITE);
+        i++;
+    }
+    closegraph();
+}
+void thick(int x1,int y1,int x2,int y2)
+{
+    float dx,dy,x,y,xinc,yinc;
+    int steps;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+            steps=abs(dx);
+    else
+            steps=abs(dy);
+    x=x1;
+    y=y1;
+    xinc=dx/steps;
+    yinc=dy/steps;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(10);
+        putpixel(x,y,WHITE);
+        putpixel(x+1,y,WHITE);
+        putpixel(x-1,y,WHITE);
+        putpixel(x,y+1,WHITE);
+        putpixel(x,y-1,WHITE);
+        i++;
+    }
+    closegraph();
+}
+void dashed_dotted(int x1,int y1,int x2,int y2)
+{
+    float dx,dy,x,y,xinc,yinc;
+    int steps;
+    dx=x2-x1;
+    dy=y2-y1;
+    if(abs(dx)>=abs(dy))
+            steps=abs(dx);
+    else
+            steps=abs(dy);
+    x=x1;
+    y=y1;
+    xinc=dx/steps;
+    yinc=dy/steps;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    putpixel(x,y,WHITE);
+    int i=1;
+    while(i<=steps)
+    {
+        x+=xinc;
+        y+=yinc;
+        delay(10);
+        if((i%10)<2)
+        {}
+        else if((i%10)<6)
+            putpixel(x,y,WHITE);
+        else if((i%10)==7)
+        {}
+        else
+            putpixel(x,y,WHITE);
+        i++;
+    }
+    closegraph();
+}
+int main()
+{
+    int x1,y1,x2,y2;
+    cout<<"Enter x1 and y1\n";
+    cin>>x1>>y1;
+    cout<<"Enter x2 and y2\n";
+    cin>>x2>>y2;
+    int gd=DETECT,gm;
+    initgraph(&gd,&gm,"");
+    dda(x1,y1,x2,y2);
+    dotted(x1,y1,x2,y2);
+    dashed(x1,y1,x2,y2);
+    thick(x1,y1,x2,y2);
+    dashed_dotted(x1,y1,x2,y2);
+}
+
+################################################################### 8 ########################################################################
+
+#include<iostream>
+#include<graphics.h>
+#include<math.h>
+using namespace std;
+void bfill(int x,int y,int newcolor ,int boundry_color)
+{
+ int current;
+ current=getpixel(x,y);
+ if((current!=15)&&(current!=4))
+ {
+   delay(1.5);
+  putpixel(x,y,4);
+  bfill(x+1,y,newcolor,boundry_color);
+  bfill(x-1,y,newcolor,boundry_color);
+  bfill(x,y+1,newcolor,boundry_color);
+  bfill(x,y-1,newcolor,boundry_color);
+ }
+ }  
+int main()
+{
+     int x1,y1,x3,y3;
+     cout<<"\nenter the digonal co-ordinate of the rectangle\n";
+     cin>>x1>>y1>>x3>>y3;
+     int gd=DETECT,gm;
+     initgraph(&gd,&gm," ");
+     line(x1,y1,x3,y1);
+     line(x3,y1,x3,y3);
+     line(x3,y3,x1,y3);
+     line(x1,y1,x1,y3);
+     int boundry_color=WHITE;
+     int newcolor=RED;
+     bfill(x1+10,y1+10,newcolor,boundry_color);
+     delay(1000);
+     closegraph();
+ }
+ 
+################################################################## 9 #########################################################################
+
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+int main()
+{
+  int x,y,r;
+  cout<<"enter x,y coordinate and radius";
+  cin>>x>>y>>r;
+  int gd=DETECT,gm;
+  initgraph(&gd,&gm," ");
+  int i=y;
+  while(i<=200)//DOWN1
+ {
+  line(0,200+2*r,640,200+2*r);
+  circle(i,i,r);
+  delay(10);
+  cleardevice();
+  i=i+1;
+  }
+  int j=200;
+  for(int i=200+r;i>=100;i--)//UP1
+  {
+  line(0,200+2*r,640,200+2*r);
+  circle(j++,i,r);
+  delay(10);
+  cleardevice();
+  }
+  for(int i=100;i<=200+r;i++)//DOWN2
+  {
+  line(0,200+2*r,640,200+2*r);
+  circle(j++,i,r);
+  delay(10);
+  cleardevice();
+  }
+  for(int i=200+r;i>=150;i--)//UP2
+  {
+  line(0,200+2*r,640,200+2*r);
+  circle(j++,i,r);
+  delay(10);
+  cleardevice();
+  }
+  for(int i=150;i<=200+r;i++)//DOWN3
+  {
+  line(0,200+2*r,640,200+2*r);
+  circle(j++,i,r);
+  delay(10);
+  cleardevice();
+  }
+  delay(1000);
+  closegraph();
+  }
+
+
+################################################################## 10 ########################################################################
+
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+void xre(int x1,int y1,int x2,int y2)
+{
+int y3=-y1;
+int y4=-y2;
+line(x1+320,240-y3,x2+320,240-y4);
+}
+void yre(int x1,int y1,int x2,int y2)
+{
+int x3=-x1;
+int x4=-x2;
+line(x3+320,240-y1,x4+320,240-y2);
+}
+void ori(int x1,int y1,int x2,int y2)
+{
+int xx1=-x1;
+int yy1=-y1;
+int xx2=-x2;
+int yy2=-y2;
+line(xx1+320,240-yy1,xx2+320,240-yy2);
+}
+void xy(int x1,int y1,int x2,int y2)
+{
+line(y1+320,240-x1,y2+320,240-x2);
+}
+int main()
+{
+int x1,y1,x2,y2;
+cout<<"x1,y1,x2,y2\n";
+cin>>x1>>y1>>x2>>y2;
+int gd=DETECT,gm;
+initgraph(&gd,&gm,"");
+line(0,240,640,240);
+line(320,0,320,480);
+line(x1+320,240-y1,x2+320,240-y2);
+xre(x1,y1,x2,y2);
+yre(x1,y1,x2,y2);
+ori(x1,y1,x2,y2);
+xy(x1,y1,x2,y2);
+delay(1000);
+}
+
+################################################################## 11 ########################################################################
+
+#include<iostream>
+#include<graphics.h>
+#include<math.h>
+using namespace std;
+int a[100],top=-1;
+void push(int data)
+{
+         top++;
+         a[top]=data;
+   }
+       int pop()
+       { 
+          int x=a[top];
+          top--;
+          return x;
+        }
+       void display()
+       {
+          int k=0;
+          char str[10];
+            int gd=DETECT,gm=VGAMAX;
+            initgraph(&gd,&gm,0);
+ 
+              int j=300;
+            while(k!=top+1)
+             {
+                   delay(100);
+                   rectangle(10,10+j,60,60+j);
+                   delay(1000);
+                   sprintf(str,"%d",a[k]);
+                   outtextxy(20,25+j,str);
+                   delay(1000);
+                   j=j-50;
+                   k++;
+              }
+                 delay(10000);
+                 closegraph();
+                 cout<<endl;
+         }
+     int main()
+    {
+           int n,i,data;           
+           cout<<"How many elememtns you want to add in stack";
+           cin>>n;
+           for(i=0;i<n;i++)
+           {
+               cout<<"Enter top element:-";
+               cin>>data;
+               push(data);
+           }
+display();
+          cout<<"enter element you want to pop";
+
+          cin>>n;
+          for(i=0;i<n;i++)
+          {
+                pop();
+           }
+         cout<<"Operation performed\n";
+         display();
+} 
+/*
+How many elememtns you want to add in stack3
+Enter top element:-12
+Enter top element:-32
+Enter top element:-34
+enter element you want to pop2
+Operation performed*/
+
+                
+################################################################## 121 #######################################################################
+
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+int main()
+{
+    int gd=DETECT,gm,i;
+    initgraph(&gd,&gm,"");
+    for(i=300;i<=330;i++)
+    {
+    circle(300,150,50);
+    circle(300,150,5);
+    line(300,150,340,150);
+    line(300,150,300,100);
+    line(300,200,i,350);
+    circle(i,355,5);
+    floodfill(i,355,15);
+    delay(100);
+    cleardevice();
+    }
+    for(i=330;i>=270;i--)
+    {
+    circle(300,150,50);
+    circle(300,150,5);
+    line(300,150,340,150);
+    line(300,150,300,100);
+    line(300,200,i,350);
+    circle(i,355,5);
+    floodfill(i,355,15);
+    delay(100);
+    cleardevice();
+    }
+
+}
+
+################################################################## 122 #######################################################################
+#include<iostream>
+#include<graphics.h>
+using namespace std;
+int main()
+{
+ int gd=DETECT,gm;
+ initgraph(&gd,&gm," ");
+ for(int i=30;i<=100;i++)
+ {
+ line(0,240,640,240);
+ circle((30+i),220,15);
+ circle((90+i),220,15);
+ rectangle(i++,220,120+i,160);
+ delay(100);
+ cleardevice();
+ }
+ closegraph();
+ }
+
+#############################################################################################################################################
